@@ -1,0 +1,102 @@
+[Title]<2009-12-22 / 15:48:14> No Title
+[비베] DoEvents   조회(219) 
+ 
+비주얼 베이직 | 2008/04/16 (수) 09:33   
+ 
+
+6.0] 유용한 함수 - #6. DoEvents - 창의 표시를 위한 시간을 CPU에게 제공한다. 
+ 
+ 단일 쓰레드 환경인 Visual Basic은 안타깝게도 한 작업 도중 다른 작업을 할수가 없습니다.. 그러나.
+ 
+ DoEvents를 이용하면 그 사이에 창의 내용이 표시되어 마치 '다중 쓰레드'인것처럼 사용자에게 상황을 보여줄 수 있습니다.
+ 
+ (DoEvents를 사용하지 않으면 창이 (응답 없음) 모드로 변합니다.)
+ 
+ 이 DoEvents가 하는 일은 그렇다면 무엇일까요?
+ 
+ 답은 간단합니다. 창에 쌓인 메시지를 처리하는 일뿐입니다. 따라서, 모듈로만 이루어진 프로그램에서 CPU의 부담을 줄인다고
+ 
+ DoEvents를 사용하는 것은, 오히려 프로그램의 성능을 저하시킬 뿐입니다.
+ 
+ 그렇다면 왜 'DoEvents'일까요?
+ 
+ VB는 다중 쓰레드 같은것은 지원하지 않습니다.(호환이 안된다고 보는게 맞겠군요.) 타이머는 다중 쓰레드같지만 실질적으로 SetTimer api와 WM_TIMER 메시지를
+ 
+ 이용해서 구현되었습니다. (Spy++로 보시면 알겠지만 별도의 타이머 창이 존재함을 알수있습니다.) 즉, 창의 메시지를 처리하면,
+ 
+ 그 사이에 이벤트를 처리할 수 있다. 이말이 되겠습니다.
+ 운영 체제가 다른 이벤트를 처리할 수 있도록 실행을 포기합니다. 
+ 
+*구문
+ 
+   DoEvents( )
+ 
+*참고
+ 
+   DoEvents 함수는 Visual Basic 전문가용과 같은 독립형 Visual Basic 버전에서 열려있는 폼 
+  의 수를 나타내는 integer값을 반환합니다. 
+   DoEvents는 다른 모든 응용 프로그램에서는0을 반환합니다. DoEvents는 컨트롤을 운영 체제
+   에 전달하며, 운영 체제가 대기열에 있는 이벤트를 처리하고 SendKeys 대기열에 있는 모든 키
+  들이 보내진 후에 컨트롤이 반환됩니다.
+ 
+  DoEvents는 예를 들어, 파일 검색과 같은 프로세스가 시작된 후 사용자가 그 프로세스를 취소할 수
+  있도록 해주는 것과 같은 간단한 작업에 아주 유용합니다. 오랫동안 실행되는 프로세스의 경우 타이
+  머를 사용하거나 ActiveX EXE 구성 요소에 그 작업을 위임함으로써 그 프로세서를 넘겨주는 작업
+  이 더 잘 수행될 수 있습니다.
+  ActiveX EXE 구성 요소에 위임할 경우 그 작업은 사용자의 응용 프로그램과는 별도로 완벽하게
+  실행될 수 있고 운영 체제가 다중 작업과 시간 분할을 담당합니다.
+ 
+*주의 
+  이벤트 프로시저 내에서 프로세서를 일시적으로 넘겨줄 때는 첫째 호출이 반환되기 전에 코드의 
+  다른 부분에서 프로시저가 다시 실행되지 않도록 주의하십시오. 이런 경우 예상치 않은 결과를 초래
+  할 수 있습니다.
+  또한 컨트롤을 넘겨준 동안 다른 응용 프로그램에서 예기치 않은 방법으로 사용자의 프로시저와 상
+  호작용할 가능성이 있을 경우에는 DoEvents를 사용하지 마십시오.
+ 
+*DoEvents 함수 예제
+  아래 예제에서는 DoEvents 함수를 사용하여 루프가 1000번 반복 때마다 운영 체제가 한 번씩 
+  실행되도록 합니다.
+  DoEvents는 호스트 프로그램이 Visual Basic일 때에만 열린 Visual Basic 폼의 개수를 
+  반환합니다. 
+' 로드된 Visual Basic 폼의 개수를 저장할 변수를 작성합니다.
+ Dim I, OpenForms For I = 1 To 150000 ' 루프를 시작합니다.
+  If I Mod 1000 = 0 Then ' 만약 루프가 1000번 반복되었다면,
+  OpenForms = DoEvents  ' 컨트롤을 운영 체제로 넘깁니다.
+ End If Next I ' 루프 카운터 증가
+ 
+ 
+ 강좌의 내용은 이것이 전부이지만, 약간 미흡한 것 같아서.. DoEvents를 api로 직접 구현하는 방법을 간단하게 써보겠습니다.
+ 
+ 어떤 창이 메시지를 처리하는 과정은 단순합니다.
+ 
+ 1. GetMessage 함수로 메시지 큐에서 메시지를 하나 꺼냅니다.
+ 2. TranslateMessage 함수를 호출하여 메시지를 해석합니다. (이 함수는 필요없는데, 어떤 메시지는 이 것이 필요하더라군요.)
+ 3. DispatchMessage 함수로 창에게 메시지 처리를 넘깁니다. (정확히 말하면 특정 창의 윈도우 프로시저를 호출한다고 보는게 맞겠네요.)
+ 
+ 그렇다면 구현해볼까요?
+ 
+ 아래는 직접 DoEvents를 vb 소스로 구현한 'MyDoEvents'입니다.
+ 
+Private Type MSG
+    hwnd As Long
+    message As Long
+    wParam As Long
+    lParam As Long
+    time As Long
+    ptx As Long ' POINTAPI
+    pty As Long ' POINTAPI
+End Type
+Private Declare Function GetMessage Lib "user32.dll" Alias "GetMessageA" (ByRef lpMsg As MSG, ByVal hwnd As Long, ByVal wMsgFilterMin As Long, ByVal wMsgFilterMax As Long) As Long
+Private Declare Function TranslateMessage Lib "user32.dll" (ByRef lpMsg As MSG) As Long
+Private Declare Function DispatchMessage Lib "user32.dll" Alias "DispatchMessageA" (ByRef lpMsg As MSG) As Long
+Sub MyDoEvents()
+    Dim gMsg As MSG
+    If GetMessage(gMsg, 0, 0, 0) Then
+        TranslateMessage gMsg
+        DispatchMessage gMsg
+    End If
+End Sub
+
+  
+ 
+

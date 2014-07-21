@@ -1,0 +1,36 @@
+[Title]VB> XML - Creating the root, a comment and a child node
+Creating the root, a comment and a child node
+
+The XML document will be built bit by bit so that the process is easy to understand, especially if the reader is a first-timer. The document above is built line by line starting from the beginning. Every XML document has a processing instruction at the very top of the document. The document must have a root element. The document may or may not have a comment, but the object model has the necessary method to create one. The code listing shown allows you to create an XML document with the root node "wroot," an element "comment" which is a child of the root, and an element "student" which is also a child of the root.
+
+Private Sub Command1_Click()
+Dim xmldoc As DOMDocument30
+Dim ProcInstr As IXMLDOMProcessingInstruction
+Dim rootElement As IXMLDOMElement
+Dim aElement As IXMLDOMElement
+'Creating DOM Document object
+Set xmldoc = New DOMDocument30
+'this adds the processing instruction
+'the first line in an XML document <?xml version="1.0"?>
+Set ProcInstr = xmldoc.createProcessingInstruction("xml", 
+"version=""1.0""")
+xmldoc.appendChild ProcInstr
+'Create the root element
+Set rootElement = xmldoc.createElement("wroot")
+Set xmldoc.documentElement = rootElement
+'Creating comment node
+Set comElement = xmldoc.createComment ("My students who took web 
+programming 
+class with me")
+'add the comment node after the root
+rootElement.appendChild comElement
+'Create the node student
+Set aElement = xmldoc.createElement("student")
+'add the student node to the root
+rootElement.appendChild aElement
+
+'Saving the xml document to c:testWebStudents.xml
+xmldoc.save "c:testWebStudents.xml"
+WebBrowser1.Navigate2 ("c:testWebStudents.xml")
+End Sub
+

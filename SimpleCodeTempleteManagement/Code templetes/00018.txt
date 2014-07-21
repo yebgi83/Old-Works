@@ -1,0 +1,671 @@
+[Title]비베에서 알아두면 유용한 팁 : 파일존재 유무 파악도 있음
+Function MakeSplit( kwd )
+   MakeSplit = replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(ToString(kwd),"",";"),"?",";"),"!",";"),",",";"),".",";"),":",";"),")",";"),"(",";"),"/",";"),"&",";"),"-",";"),"'",";"),"*",";"),"+",";"),"`",";")
+End Function
+
+ 
+
+Function MakeKeyword( kwd )
+   MakeKeyword = replace(MakeSplit(kwd),";","")
+End Function
+
+ 
+
+Function ToString( value )
+ If IsNull(value) or IsEmpty(value) Then
+  ToString = ""
+ Else
+  ToString = value
+ End If
+End Function
+
+ 
+
+Function ToDouble( value )
+  If IsNull(value) or IsEmpty(value) or Not IsNumeric(value) Then
+   ToDouble = 0.0
+  Else
+   ToDouble = CDbl(value)
+  End If
+ End Function
+
+ 
+
+ Function ToLong( value )
+  If IsNull(value) or IsEmpty(value) or Not IsNumeric(value) Then
+   ToLong = 0.0
+  Else
+   ToLong = CLng(value)
+  End If
+ End Function
+
+ 
+
+ Function ToBool( value )
+  Select Case UCase(ToString(value))
+  Case "True", "1"
+   ToBool = 1
+  Case Else
+   ToBool = 0
+  End Select
+ End Function
+
+ 
+
+ Function ToZeroString( value, num )
+  Dim i, result
+  result = ToString(value)
+  
+  For i = Len(result) to num
+   result = "0" & result
+  Next
+  
+  ToZeroString = Right(result,num)
+ End Function
+
+ Function ToDateString( value )
+  If IsNull(value) or IsEmpty(value) Then
+   ToDateString = ""
+  Else
+   ToDateString = Right("0000"&Year(value),4) & Right("0"&Month(value),2) & Right("0"&Day(value),2)
+  End If
+ End Function
+
+ 
+
+ 
+
+ 'ASP -> DB ===============================================
+ Function ToDbDouble( value )
+  If IsNull(value) or IsEmpty(value) or Not IsNumeric(value) Then
+   ToDbDouble = "NULL"
+  Else
+   ToDbDouble = ToDouble(value)
+  End If
+ End Function
+
+ 
+
+ Function ToDbLong( value )
+  If IsNull(value) or IsEmpty(value) or Not IsNumeric(value) Then
+   ToDbLong = "NULL"
+  Else
+   ToDbLong = ToLong(value)
+  End If
+ End Function
+
+ 
+
+ Function ToDbId( value )
+  If IsNull(value) or IsEmpty(value) or Not IsNumeric(value) Then
+   ToDbId = "NULL"
+  Else
+   ToDbId = ToLong(value)
+   If ToDbId = 0 Then
+    ToDbId = "NULL"
+   End If
+  End If
+ End Function
+ 
+ Function ToDbString( value )
+  If IsNull(value) or IsEmpty(value) or value = "" Then
+   ToDbString = "NULL"
+  Else
+   ToDbString = "'" & Replace( Trim(value), "'", "''" ) & "'"
+  End If
+ End Function
+
+ 
+
+ Function ToDbBool( value )
+  Select Case UCase(ToString(value))
+  Case "TRUE", "1"
+   ToDbBool = 1
+  Case Else
+   ToDbBool = 0
+  End Select
+ End Function
+
+ Function ToDbDatetime( value )
+  If IsNull(value) or IsEmpty(value) or value = "" Then
+   ToDbDatetime = "NULL"
+  Else
+   ToDbDatetime = "'" & Year(value) & "-" & month(value) & "-" & day(value) & " " & hour(value) & ":" & minute(value) & ":" & Second(value) & "'"
+  End If
+ End Function
+ 
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+ Function ToMoney( value )
+  value = ToLong( value )
+  If value > 999 Then
+   value = FormatNumber( value, 0 )
+  End If
+  ToMoney = value
+ End Function
+ 
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+
+ '###################################################################################################
+ '## Description: 날짜관련 함수
+ '###################################################################################################
+
+ '주어진 날짜의 그 달 첫번째 일을 구하는 함수
+ Function GetMonthFirstDay( dt )
+  GetMonthFirstDay = DateSerial( Year(dt),  Month(dt), 1 )
+ End Function
+
+ '주어진 날짜의 그 달 마지막 일을 구하는 함수
+ Function GetMonthLastDay( dt )
+  GetMonthLastDay = DateSerial( Year(dt),  Month(dt)+1, 0 )
+ End Function
+
+ '주어진 날짜의 그 달 첫번째 주를 구하는 함수
+ Function GetMonthFirstWeek( dt )
+  GetMonthFirstWeek = GetWeekStr( GetMonthFirstDay(dt) )
+ End Function 
+
+ '주어진 날짜의 그 달 마지막 주를 구하는 함수
+ Function GetMonthLastWeek( dt )
+  GetMonthLastWeek = GetWeekStr( GetMonthLastDay(dt) )
+ End Function
+ 
+ '주어진 날짜가 주어진 달의 몇번째 주인가 카운트하는 함수
+ Function GetWeekCount( dt )
+  Dim temp
+  temp = weekday(GetMonthFirstDay(dt)) - 2 + Day(dt) 
+  temp = (temp - (temp mod 7))/7
+  GetWeekCount = temp + 1
+ End Function
+
+ '주어진 날짜를 7자리 Week String으로 반환하는 함수
+ Function GetWeekStr( dt )
+  GetWeekStr = Right("0000"&Year(dt),4) & Right("00"&Month(dt),2) & GetWeekCount(dt) 
+ End Function
+
+ '현재 날짜를 7자리 Week String으로 반환하는 함수
+ Function GetCurrentWeekStr
+  GetCurrentWeekStr = GetWeekStr(now)
+ End Function
+
+ '주어진 날짜를 8자리 Date String으로 반환하는 함수
+ Function GetDateStr( dt )
+  GetDateStr = Right("0000"&Year(dt),4) & Right("00"&Month(dt),2) & Right("00"&Day(dt),2)
+ End Function
+
+ '현재 날짜를 8자리 Date String으로 반환하는 함수
+ Function GetCurrentDateStr
+  GetCurrentDateStr = GetDateStr(now)
+ End Function
+
+ '주어진 주의 첫번째 날짜를 구하는 함수
+ Function GetWeekFirstDay( dts )
+  Dim firstDayOfMonth, temp
+  firstDayOfMonth = DateSerial( Left(dts,4), Mid(dts,5,2), 1 )
+  temp = firstDayOfMonth + 7*(Right(dts,1)-1)
+  temp = temp - (weekday(temp)-1)
+  If temp < firstDayOfMonth Then
+   temp = firstDayOfMonth
+  End If
+  GetWeekFirstDay = temp
+ End Function
+
+ '주어진 주의 마지막 날짜를 구하는 함수
+ Function GetWeekLastDay( dts )
+  Dim lastDayOfMonth, temp
+  lastDayOfMonth = DateSerial( Left(dts,4), Mid(dts,5,2)+1, 0 )
+  temp = GetMonthFirstDay(lastDayOfMonth) + 7*(Right(dts,1)-1)
+  temp = temp + (7-weekday(temp))
+  If temp > lastDayOfMonth Then
+   temp = lastDayOfMonth
+  End If
+  GetWeekLastDay = temp
+ End Function
+
+ '주어진 주의 바로 전 주를 구하는 함수
+ Function GetWeekPrevWeek( dts )
+  If Right(dts,1) = "1" Then
+   GetWeekPrevWeek = GetWeekStr( DateSerial( Left(dts,4), Mid(dts,5,2), 0 ) )
+  Else
+   GetWeekPrevWeek = Left(dts,6) & ToString(Right(dts,1)-1)
+  End If
+ End Function
+
+ '주어진 주의 바로 다음 주를 구하는 함수
+ Function GetWeekNextWeek( dts )
+  If GetMonthLastWeek( DateSerial( Left(dts,4), Mid(dts,5,2), 1 ) ) = dts Then
+   GetWeekNextWeek = GetWeekStr( DateSerial( Left(dts,4), Mid(dts,5,2)+1, 1 ) )
+  Else
+   GetWeekNextWeek = Left(dts,6) & ToString(Right(dts,1)+1)
+  End If
+ End Function
+ 
+ Function GetCurrentWeekString
+  GetCurrentWeekString = right("0000" & Year(now), 4) & right("00" & month(now), 2) & GetCurrentWeekCount
+ End Function
+
+ Function GetDatestrString( pDate, pType )
+  If IsNull(pDate) or IsEmpty(pDate) or len(pDate) <> 8 Then
+   GetDatestrString = ""
+   Exit Function
+  End If
+
+  Select Case pType
+  Case 1
+   If Left(pDate,4) <> "0000" Then
+    GetDatestrString = Left(pDate,4)
+    If Mid(pDate,5,2) <> "00" Then
+     GetDatestrString = GetDatestrString & "-" & Mid(pDate,5,2)
+     If Right(pDate,2) <> "00" Then
+      GetDatestrString = GetDatestrString & "-" & Right(pDate,2)
+     End If
+    End If
+   End If
+  Case 2
+   If Left(pDate,4) <> "0000" Then
+    GetDatestrString = Left(pDate,4)
+   Else
+    GetDatestrString = "????"
+   End If
+   If Mid(pDate,5,2) <> "00" Then
+    GetDatestrString = GetDatestrString & "-" & Mid(pDate,5,2)
+   Else
+    GetDatestrString = GetDatestrString & "-??"
+   End If
+   If Right(pDate,2) <> "00" Then
+    GetDatestrString = GetDatestrString & "-" & Right(pDate,2)
+   Else
+    GetDatestrString = GetDatestrString & "-??"
+   End If
+  Case Else
+   GetDatestrString = ""
+  End Select
+
+ End Function
+
+ Function GetDateString( pDate, pType )
+
+  If Not IsDate(pDate) Then
+   GetDateString = ""
+   Exit Function
+  End If
+
+  GetDateString = GetDatestrString( Year(pDate) & Right("0"&Month(pDate),2) & Right("0"&Day(pDate),2),  pType )
+ End Function
+ 
+ Function GetTimeString( pTime, pType )
+  If IsNull(pTime) or IsEmpty(pTime) or Not IsNumeric(pTime) Then
+   GetTimeString = ""
+   Exit Function
+  End IF
+
+  Select Case pType
+  Case 1
+   GetTimeString = int(pTime/100) & ":" & Right("0"&(pTime mod 100),2)
+  Case Else
+   GetTimeString = ""
+  End Select
+ End Function
+ 
+ Function GetCurrentWeekCount
+  Dim firstDayOfMonth, temp
+  firstDayOfMonth = Year(now) & "/" & Month(now) & "/1"
+  temp = weekday(firstDayOfMonth) -2 + Day(now)
+  temp = (temp - (temp mod 7))/7
+  GetCurrentWeekCount = temp + 1
+ End Function
+ 
+
+ '###################################################################################################
+ '## ComboBox의 내용을 DB의 해당되는 TABLE로 부터 생성
+ '## Parameters
+ '##  - pControlName : select 이름
+ '##  - pOption      : select tag에 추가로 들어갈 옵션
+ '##  - pAll         : value가 "" 인 항목을 추가하고싶을 때 그 항목의 이름(예 : 전체선택)
+ '##  - pSelection   : 선택되어 보여질 항목의 value
+ '##   - pTableName   : DB에서 참조할 Table 이름
+ '##   - pColumnValue : 해당 Table 에서 value로 참조할 Column 이름
+ '##   - pColumnDesc  : 해당 Table 에서 항목이름으로 참조할 Column 이름
+ '##   - pSqlWhere    : Query를 수행할 때 붙을 조건
+ '################################################################################################### 
+
+ Sub ShowComboBoxFromDB( pControlName, pOption, pAll, pSelection, pTableName, pColumnValue, pColumnDesc, pSqlWhere )
+  Response.Write( "<select name='" & pControlName & "' " & pOption & ">" )
+  If pAll <> "" Then
+   If pSelection = "" Then
+    Response.Write( "<option value="""" selected>" & pAll & "</option>" )
+   Else
+    Response.Write( "<option value="""">" & pAll & "</option>" )
+   End If
+  End If
+  
+  Dim sql, rs
+  sql = "SELECT " & pColumnValue & ", " & pColumnDesc & " FROM " & pTableName
+  If pSqlWhere <> "" and Not Isnull(pSqlWhere) and Not IsEmpty(pSqlWhere) Then
+   sql = sql & " where " & pSqlWhere
+  End If
+  Set rs = gODbCon.Execute( sql )
+  
+  While Not rs.EOF
+   If rs(pColumnValue) = pSelection Then
+    Response.Write( "<option value='" & rs(pColumnValue) & "' selected>" & rs(pColumnDesc) & "</option>" )
+   Else
+    Response.Write( "<option value='" & rs(pColumnValue) & "'>" & rs(pColumnDesc) & "</option>" )
+   End If
+  rs.MoveNext
+  WEnd
+  
+  rs.Close
+  Set rs = nothing
+  
+  Response.Write( "</select>" )
+ End Sub
+ 
+ '###################################################################################################
+ '## ComboBox의 내용을 배열로부터 생성
+ '## Parameters
+ '##  - pControlName : select 이름
+ '##  - pOption      : select tag에 추가로 들어갈 옵션
+ '##  - pAll         : value가 "" 인 항목을 추가하고싶을 때 그 항목의 이름(예 : 전체선택)
+ '##  - pSelection   : 선택되어 보여질 항목의 value
+ '##   - pValueArr    : 항목의 value로 사용되는 배열
+ '##   - pDescArr     : 항목의 이름으로 사용되는 배열
+ '###################################################################################################
+ 
+ Sub ShowComboBoxFromArray( pControlName, pOption, pAll, pSelection, pValueArr, pDescArr )
+  Dim i
+  
+  Response.Write( "<select name='" & pControlName & "' " & pOption & ">" )
+  If pAll <> "" Then
+   If pSelection = "" Then
+    Response.Write( "<option value="""" selected>" & pAll & "</option>" )
+   Else
+    Response.Write( "<option value="""">" & pAll & "</option>" )
+   End If
+  End If
+  For i=0 to UBound(pValueArr)
+   If pValueArr(i) = pSelection Then
+    Response.Write( "<option value='" & pValueArr(i) & "' selected>" & pDescArr(i) & "</option>" )
+   Else
+    Response.Write( "<option value='" & pValueArr(i) & "'>" & pDescArr(i) & "</option>" )
+   End If
+  Next
+  Response.Write( "</select>" )
+ End Sub
+
+ '###################################################################################################
+ '## 사용자가 사용하고 있는 브라우져 타입과 버젼을 읽고, 전역변수에 설정한다.
+ '###################################################################################################
+ 
+ Sub checkBrowerType
+  Dim BrowserComponent
+
+  Set BrowserComponent = Server.CreateObject("MSWC.BrowserType")
+
+  gBrowserType = BrowserComponent.Browser
+  gBrowserVersion = BrowserComponent.version
+ 
+  Set BrowserComponent = nothing
+ End Sub
+
+ 
+ '###################################################################################################
+ '## SMTP 메일 발송( CDONTS )
+ '###################################################################################################
+ 
+ Function SendMail( pToEmail, pToName, pFromEmail, pFromName, pSubject, pContents )
+  Dim oMail
+  Set oMail = Server.CreateObject( "CDONTS.NewMail" )
+  
+  oMail.To = pToName & "<" & pToEmail & ">"
+  oMail.From = pFromName & "<" & pFromEmail & ">"
+  oMail.BodyFormat = 0 'HTML
+  oMail.MailFormat = 0 'MIME
+  oMail.Subject = pSubject
+  oMail.Body = pContents
+  oMail.Send
+  
+  Set oMail = nothing
+ End Function
+ 
+
+ '###################################################################################################
+ '## Description: 검색하려는 문자열의 특수문자를 제거한다.
+ '## Function:
+ '##  - MakeSplit: 특수문자 제거 
+ '##  - MakeKeyword: 특수문자 제거 후 검색 키워드 생성
+ '###################################################################################################
+ 
+ Function MakeSplit( kwd )
+  MakeSplit = replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(ToString(kwd)," ",";"), "?", ";"),"!",";"),",",";"),".",";"),":",";"),")",";"),"(",";"),"/",";"),"&",";"),"-",";"),"'",";"),"*",";"),"+",";"),"`",";")
+ End Function
+
+ Function MakeKeyword( kwd )
+  MakeKeyword = replace(MakeSplit(kwd),";","")
+ End Function
+
+
+ '###################################################################################################
+ '## 검색어 쿠키 저장 관련
+ '###################################################################################################
+ Function GetPreviousSearchItem( pSection )
+  GetPreviousSearchItem = split(Trim(Request.Cookies("SEARCH")(pSection)),C_SPLITER)
+ End Function
+
+ 
+ '###################################################################################################
+ '## Description: 파일 엑세스 관련 함수
+ '## Function:
+ '##  - ReadTextFile: 특정 파일 읽기
+ '##  - ExistFile: 파일 존재 유무 체크
+ '###################################################################################################
+
+ Function ReadTextFile( pFileName )
+  Dim fs, fn
+  Set fs = CreateObject("Scripting.FileSystemObject") 
+
+  'response.write( pFileName )
+  Set fn = fs.OpenTextfile( Server.Mappath(pFileName), 1 )
+  ReadTextFile = fn.ReadAll()
+  fn.Close
+  Set fn = nothing
+  Set fs = nothing
+ End Function
+
+ Function ExistFile( pPath )
+  ExistFile = False
+  pPath = ToString(pPath)
+  If pPath = "/images/noimage75.gif" Then
+   ExistFile = False
+  ElseIf left(pPath,4) = "http" Then
+   ExistFile = True
+  Elseif len(pPath) > 0 Then
+   Dim fs
+   Set fs = CreateObject("Scripting.FileSystemObject") 
+   If fs.FileExists(Server.MapPath( pPath )) Then
+    ExistFile = True
+     End If
+   Set fs = nothing
+  End If
+ End Function
+
+ Function checkImage( pPath, pType, pSize )
+  If ExistFile( pPath ) Then
+   CheckImage = pPath
+  Else
+   Select Case pType 
+   Case "ARTIST"
+    Select Case pSize
+    Case 150
+     CheckImage = "/images/icon_blank_man_150.gif"
+    Case 75
+     CheckImage = "/images/icon_blank_man_75.gif"
+    Case Else
+     CheckImage = "/images/icon_blank_man_75.gif"
+    End Select
+   Case "ALBUM"
+    Select Case pSize
+    Case 150
+     CheckImage = "/images/icon_blank_media_150.gif"
+    Case 75
+     CheckImage = "/images/icon_blank_media_75.gif"
+    Case Else
+     CheckImage = "/images/icon_blank_media_75.gif"
+    End Select
+   Case Else
+    CheckImage = "/images/noimage75.gif"
+   End Select
+  End If
+ End Function
+'--------------------------------------------------------------------
+' 페이지 이동 버튼을 만듭니다.
+'--------------------------------------------------------------------
+Function goPage(total, pageSeq, viewList, pageList)
+ Dim pageTotal, groupTotal, groupSeq, str, j, k, i
+
+ pageTotal = (int)((total - 1)/viewList) + 1 ' 전체 페이지 수
+ groupTotal = (int)((pageTotal - 1)/pageList) + 1 ' 전체 그룹 수
+
+ groupSeq = (int)((pageSeq - 1)/pageList) + 1 ' 현재의 그룹 위치
+
+
+ str = "<table border=""0"" cellspacing=""0"" cellpadding=""0""><tr>"
+
+ ' 먼저 왼쪽편 groupSeq = 1 이면 링크를 걸지 않고 이상이면 링크를 건다.
+ If groupSeq = 1 Then
+  str = str & "<td width=20>&lt;</td>"
+ Else
+  k = (groupSeq - 1) * pageList
+  str = str & "<td width=20><a href=""javaScript:goPage('" & k & "');"">&lt;</a></td>"
+ End If
+
+
+ ' 중앙에 루프를 돌려서 위치를 잡는다.
+  str = str & "<td align=""center"" class=""fpt"" id=""9"">"
+
+  If groupSeq * pageList > pageTotal Then
+   j = pageTotal
+  Else
+   j = groupSeq * pageList
+  End If
+
+ For i = (groupSeq - 1) * pageList + 1 to j
+  If i = ToLong(pageSeq) Then
+   str = str & "<b>" & i & "</b>"
+  Else
+   str = str & "<a href=""javaScript:goPage('" & i & "');"">" & i & "</a>"
+  End If
+  
+  If i <> j Then
+   str = str & " | "
+  End If
+  
+ Next
+  str = str & "</td>"
+
+
+ ' 오른쪽을 구한다.
+ If groupSeq = groupTotal Then
+  str = str & "<td width=20 align=right>&gt;</td>"
+ Else
+  k = groupSeq * pageList + 1
+  str = str & "<td width=20 align=right><a href=""javaScript:goPage('" & k & "');"">&gt;</a></td>"
+ End If
+
+ str = str & "</tr></table>"
+
+
+ If ToLong(total) = 0 Then
+  goPage = ""
+ Else
+  goPage = str
+ End If
+End Function
+
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ ' Backoffice 에서 사용할 함수
+ 
+ Function CheckboxToBool( val )
+  If val = "on" Then
+   CheckboxToBool = 1
+  Else
+   CheckboxToBool = 0
+  End If
+ End Function
+ 
+ Function BoolToCheckbox( val )
+  If val = "True" Then
+   BoolToCheckbox = "checked"
+  Else
+   BoolToCheckbox = ""
+  End If
+ End Function
+
+ Function GetPhoneView( pPhoneStr, pType )
+  Dim result
+  Select Case pType
+  Case 1
+   result = Left(pPhoneStr,4) 
+   If result = "0000" Then
+    result = "0"
+   Else
+    result = "+" & ToLong(result) & "-"
+   End If
+   result = result & ToLong(Mid(pPhoneStr,5,4)) & "-" & ToLong(Mid(pPhoneStr,9,4)) & "-" & ToLong(Mid(pPhoneStr,13,4))
+   If Mid(pPhoneStr,17,4) <> "0000" Then
+    result = result & "(" & ToLong(Mid(pPhoneStr,17,4)) & ")"
+   End If
+  Case 2
+   result = "0" & ToLong(Left(pPhoneStr,4)) & "-" & ToLong(Mid(pPhoneStr,5,4)) & "-" & ToLong(Mid(pPhoneStr,9,4))
+  End Select
+  GetPhoneView = result
+ End Function
+ 
+ '이메일 체크
+ Function validEmail( email )
+  Dim atPos, atPosRev, dotPos
+  
+  atPos     = InStr( email, "@" )
+  atPosRev  = InStrRev( email, "@" )
+  dotPos    = InStr( email, "." )
+  If atPos > 0 and dotPos > 0 and atPos = atPosRev Then
+   validEmail = True
+  Else
+   validEmail = False
+  End If
+ End Function
+ 
+ '######################################################################
+ 'SONG PLAY LOG 
+ Sub InsertLogs( pST, pED, pEId, pUserId )
+  Dim sql
+  If CheckLogCount( pUserId, pST, pED, pEId ) Then
+   sql = " Insert into CM_SONG_HISTORY"
+   sql = sql & " (remote_host,service_type,element_domain,element_id,user_id)"
+   sql = sql & " Values ('"&Request.ServerVariables("REMOTE_HOST")&"','"&UCase(pST)&"','"&UCase(pED)&"','"&pEId&"','"&pUserId&"')"
+   gOdbCon.Execute(sql)
+  End If
+ End Sub
+
+ Function CheckLogCount( pUserId, pST, pED, pEId )
+  Dim sql, rs, lTotal
+  sql = "select count(*) as cnt from CM_SONG_HISTORY " _
+   & "where user_id = '" & pUserId & "' and element_id = " & ToLong(pEId) & " and service_type = '" & pST & "' and element_domain = '" & pED & "' " _
+   & "and datediff(dd,create_datetime,getDate()) < 1"
+  Set rs = gODbCon.Execute( sql )
+  lTotal = ToLong(rs("cnt"))
+  rs.close
+  Set rs = nothing
+  
+  If lTotal > 5 Then
+   CheckLogCount = False
+  Else
+   CheckLogCount = True
+  End If
+ End Function
+%>
+[출처] 알아두면 유용한 VB 함수들|작성자 가브리엘 록키 표
+
+
+

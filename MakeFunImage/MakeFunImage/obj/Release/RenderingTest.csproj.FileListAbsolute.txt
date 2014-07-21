@@ -1,0 +1,8 @@
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\obj\Release\ResolveAssemblyReference.cache
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\obj\Release\RenderingTest.frmMain.resources
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\obj\Release\RenderingTest.Properties.Resources.resources
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\obj\Release\RenderingTest.csproj.GenerateResource.Cache
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\bin\Release\RenderingTest.exe
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\bin\Release\RenderingTest.pdb
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\obj\Release\RenderingTest.exe
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\obj\Release\RenderingTest.pdb

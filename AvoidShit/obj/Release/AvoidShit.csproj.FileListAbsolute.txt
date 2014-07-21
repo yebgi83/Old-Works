@@ -1,0 +1,24 @@
+D:\Dev\Etc\AvoidShit\bin\Release\AvoidShit.exe
+D:\Dev\Etc\AvoidShit\bin\Release\AvoidShit.pdb
+D:\Dev\Etc\AvoidShit\obj\Release\ResolveAssemblyReference.cache
+D:\Dev\Etc\AvoidShit\obj\Release\WindowsFormsApplication1.frmMain.resources
+D:\Dev\Etc\AvoidShit\obj\Release\WindowsFormsApplication1.Properties.Resources.resources
+D:\Dev\Etc\AvoidShit\obj\Release\AvoidShit.csproj.GenerateResource.Cache
+D:\Dev\Etc\AvoidShit\obj\Release\AvoidShit.exe
+D:\Dev\Etc\AvoidShit\obj\Release\AvoidShit.pdb
+D:\Development\AvoidShit\obj\Release\AvoidShit.exe
+D:\Development\AvoidShit\obj\Release\AvoidShit.pdb
+D:\Development\AvoidShit\bin\Release\AvoidShit.exe
+D:\Development\AvoidShit\bin\Release\AvoidShit.pdb
+D:\Development\AvoidShit\obj\Release\ResolveAssemblyReference.cache
+D:\Development\AvoidShit\obj\Release\AvoidShit.frmMain.resources
+D:\Development\AvoidShit\obj\Release\AvoidShit.Properties.Resources.resources
+D:\Development\AvoidShit\obj\Release\AvoidShit.csproj.GenerateResource.Cache
+D:\Development\C# Development Projects\AvoidShit\obj\Release\AvoidShit.exe
+D:\Development\C# Development Projects\AvoidShit\obj\Release\AvoidShit.pdb
+D:\Development\C# Development Projects\AvoidShit\bin\Release\AvoidShit.exe
+D:\Development\C# Development Projects\AvoidShit\bin\Release\AvoidShit.pdb
+D:\Development\C# Development Projects\AvoidShit\obj\Release\ResolveAssemblyReference.cache
+D:\Development\C# Development Projects\AvoidShit\obj\Release\AvoidShit.frmMain.resources
+D:\Development\C# Development Projects\AvoidShit\obj\Release\AvoidShit.Properties.Resources.resources
+D:\Development\C# Development Projects\AvoidShit\obj\Release\AvoidShit.csproj.GenerateResource.Cache

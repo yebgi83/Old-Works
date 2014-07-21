@@ -1,0 +1,136 @@
+[Title]Visual Basic에서 ADO 사용법
+獨白! 정두환 블로그 얍 
+homealbumGuestbookAdminVisual Basic에서 ADO 사용법
+테크닉(技?)/비주얼베이직(Visual Bagic) 2006/06/22 17:34 by 두화니 
+Dim 커넥션개체이름 as Connection
+Dim 레코드셋이름 as Recordset
+Set 커넥션개체이름 = new ADODB.Connection
+Set 레코드셋이름= new ADODB.Recordset
+ <디비 관련 개체들의 선언>
+개체가 이용할 메모리 공간을 할당하겠다고 선언
+ 
+Dim 연결문자열 as String
+연결문자열=”Provider=Microsoft.Jet.OLEDB.4.0;
+           Data Source=데이터베이스위치와파일명;”
+
+커넥션개체이름.open 연결문자열
+
+ <데이터베이스의 연결>
+연결문자열 값에 따라서  MSSQL,
+ORACLE,ACCESS,Mysql등 여러 데이터베이스에 연결할 수 있다.
+ 
+Dim 쿼리 as string
+쿼리=”SELECT 열이름1,열이름2,열이름3 FROM 테이블명”
+
+레코드셋이름.open 쿼리, 커넥션개체이름
+ <레코드셋 얻어오기>
+SELECT 문을 사용해서 레코드를 얻어온다. Open 뒤에 쿼리문과 어떤 데이터베이스를 사용할지를 정하고 있다.
+ 
+Dim 쿼리 as string
+쿼리=”INSERT INTO 테이블명 (열이름1) VALUES (값)”
+커넥션개체이름.execute (쿼리)
+ <데이터의 수정,삭제,삽입>
+INSERT,DELETE,UPDATE 구문모두 커넥션개체의 execute메소드를 사용해서 처리한다.
+ 
+Set 커넥션개체이름 = nothing
+Set 레코드셋이름 = nothing
+커넥션개체이름.Close
+레코드셋이름.Close
+ <개체 해제>
+사용된 디비 개체들을 해제시켜줘야 메모리에서 없어진다.
+커넥션개체를 해제 시키면 지정된 디비와의 연결이 끊어지는걸 의미한다.
+ 
+
+
+2006/06/22 17:34 2006/06/22 17:34 
+TAG : ADO, 비베, 비주얼베이직
+1 Trackback : 0 Comment TRACKBACK URL :: http://duhwani.byus.net/blog/trackback/672
+비주얼베이직 adodb 객체 사용법: Nice Guys Finish Last 2006/09/27 09:03  
+ADODB Connection...
+Leave a Comment
+ Your Name (required) 
+ Password (required) 
+ Your Website Address 
+ 
+Secret 
+
+ 
+1  ... 365 366 367 368 369 370 371 372 373  ... 753    
+ 전체(全都) (753) 
+ 
+ 독백(?白) (83) 
+ 
+
+ 일기(日志) (53) 
+ 
+ 수업 (0) 
+ 
+
+ 朋友 (13) 
+ 
+
+ 사람(?系) (5) 
+ 
+ 멘토링(??指?) (3) 
+ 
+
+ 축구(足球) (8) 
+ 
+
+ 동영상자료(?影) (1) 
+ 
+
+ 서재(?屋) (89) 
+ 
+
+ 좋은글 (12) 
+ 
+
+ 땅울림(地?) (10) 
+ 
+
+ 음악(音?) (29) 
+ 
+
+ 중국가요(中?歌) (15) 
+ 
+ 재즈(爵士) (8) 
+ 
+
+ 젊음(?春) (96) 
+ 
+
+ 05년겨울(05年冬天) (73) 
+ 
+
+ 큰눈으로(???) (45) 
+ 
+
+ 테크닉(技?) (129) 
+ 
+
+ 비주얼베이직(Visual Bagic) (30) 
+ 
+ 객체지향(OOP) (15) 
+ 
+ 외국어(外??) (10) 
+ 
+
+ 모음집(剪?) (121) 
+ 
+
+ 기업(公司) (2) 
+ 
+
+ SAMSUNG THALES (2) 
+ 
+
+ DREAM(?想) (120) 
+ 
+ 
+최근에 올라온 글[마쓰시타 고노... [로버트 기요사... [심상민] 비전... 온천여행 [테루야 하나코... [도이 에이지]... 최근에 달린 댓글해보고 올리셈.... 11/21 아직 삼십 멀었... 10/07 저도 그 책 재... 09/04 잘 보고 갑니다... 07/31 찾던 것이었는... 2008 ㅋㅋ오늘 빌렸... 2008 
+링크[CSE]Java 6 API [ETC](주)호성스... [ETC]QOOK문자 [PEOPLE]오재현... [PEOPLE]자두회 [TEAM]최강축구... [ETC]Istockphoto [ETC]Vunkysearc... [ETC]레이소다 [IT]마소 클립아트 [IT]엑사모 
+Total : 307562 / Today : 113 / Yesterday : 164 
+두화니's Blog is powered by Textcube / Designed by Qwer999 
+
+  

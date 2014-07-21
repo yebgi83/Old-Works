@@ -1,0 +1,8 @@
+D:\Development\SpritePacker\SpritePacker\obj\Debug\ResolveAssemblyReference.cache
+D:\Development\SpritePacker\SpritePacker\obj\Debug\SpritePacker.frmMain.resources
+D:\Development\SpritePacker\SpritePacker\obj\Debug\SpritePacker.Properties.Resources.resources
+D:\Development\SpritePacker\SpritePacker\obj\Debug\SpritePacker.csproj.GenerateResource.Cache
+D:\Development\SpritePacker\SpritePacker\bin\Debug\SpritePacker.exe
+D:\Development\SpritePacker\SpritePacker\bin\Debug\SpritePacker.pdb
+D:\Development\SpritePacker\SpritePacker\obj\Debug\SpritePacker.exe
+D:\Development\SpritePacker\SpritePacker\obj\Debug\SpritePacker.pdb

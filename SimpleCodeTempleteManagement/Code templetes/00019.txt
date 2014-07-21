@@ -1,0 +1,3 @@
+[Title]VB) 파일 존재 유무 관련 ( 미완성 )
+Dim fs
+Set fs = CreateObject("Scripting.FileSystemObject")

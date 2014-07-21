@@ -1,0 +1,8 @@
+D:\Dev\Etc\AvoidShit\obj\Debug\ResolveAssemblyReference.cache
+D:\Dev\Etc\AvoidShit\obj\Debug\WindowsFormsApplication1.frmMain.resources
+D:\Dev\Etc\AvoidShit\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+D:\Dev\Etc\AvoidShit\obj\Debug\AvoidShit.csproj.GenerateResource.Cache
+D:\Dev\Etc\AvoidShit\bin\Debug\AvoidShit.exe
+D:\Dev\Etc\AvoidShit\bin\Debug\AvoidShit.pdb
+D:\Dev\Etc\AvoidShit\obj\Debug\AvoidShit.exe
+D:\Dev\Etc\AvoidShit\obj\Debug\AvoidShit.pdb

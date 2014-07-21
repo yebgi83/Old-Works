@@ -1,0 +1,7 @@
+[Title]Winsock¿« stateº≥∏Ì
+constant         value        description
+sckClosed          0           Default, Closed
+sckOpen            1           Open
+sckListening      2           Listening
+
+

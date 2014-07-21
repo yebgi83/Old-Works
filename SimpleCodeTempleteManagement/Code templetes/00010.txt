@@ -1,0 +1,265 @@
+[Title]자동 MDB 생성 함수
+ 
+ken][in  번호: 432  / 읽음:2,060 
+보통 개발자들이 DAO 프로젝트개발시 DB를 만들어 놓고 대게 프로그램을
+짭니다. 그리고 MDB가 잘사용하다가도 데이타 양의 건수가 많아서
+Backup을 하고 그리고 최악에 상황에서는 DB 깨지는 경우가 
+종종생기죠.
+좀 번거럽지만 DB수정이 일어나지 않는 한, 함수 Call만 하면
+언제든지 원하는 MDB 생성 함수를 만들어보았습니다.
+
+MDB생성부터 Table생성, PrimaryKey생성, RELATIONSHIP 구성까지 되죠.
+매개변수를 생성하는 풀경로와 화일명을 적어주면 끝납니다.
+
+참고가 되길바랍니다.
+
+Public Function DB_Create(ByVal DbName) As Boolean
+Dim winDatabase As Database
+Dim winTableDef As TableDef
+Dim winQueryDef As QueryDef
+Dim winIndex As Index
+Dim winField, winField1, winField2 As Field
+Dim winRelation As Relation
+
+On Error GoTo CreateError
+Set winDatabase = CreateDatabase(Trim(DbName), dbLangKorean, dbVersion30)
+Set winDatabase = OpenDatabase(Trim(DbName))
+On Error GoTo 0
+
+'  CREATE TABLE "Table1"
+Set winTableDef = winDatabase.CreateTableDef("Table1")
+Set winField = winTableDef.CreateField("t1_a", dbText, 7)
+winField.Required = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t1_b", dbText, 80)
+winField.AllowZeroLength = True
+winTableDef.Fields.Append winField
+winDatabase.TableDefs.Append winTableDef
+Set winField = winTableDef.Fields("t1_a")
+Set winField = winTableDef.Fields("t1_b")
+
+Set winTableDef = winDatabase.TableDefs("Table1")
+Set winIndex = winTableDef.CreateIndex("PrimaryKey")
+Set winField = winIndex.CreateField("t1_a")
+winIndex.Fields.Append winField
+winIndex.Primary = True
+winIndex.Clustered = True
+winTableDef.Indexes.Append winIndex
+
+'  CREATE TABLE "Table2"
+Set winTableDef = winDatabase.CreateTableDef("Table2")
+Set winField = winTableDef.CreateField("t2_a", dbText, 20)
+winField.Required = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_b", dbText, 60)
+winField.AllowZeroLength = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_c", dbInteger)
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_d", dbDouble)
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_e", dbDouble)
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_f", dbDate)
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_g", dbText, 1)
+winField.AllowZeroLength = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_h", dbText, 2)
+winField.AllowZeroLength = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_i", dbText, 2)
+winField.AllowZeroLength = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_j", dbDate)
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_k", dbDate)
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_l", dbText, 14)
+winField.AllowZeroLength = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_m", dbText, 20)
+winField.AllowZeroLength = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_n", dbText, 14)
+winField.AllowZeroLength = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_o", dbText, 20)
+winField.AllowZeroLength = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_p", dbText, 40)
+winField.AllowZeroLength = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_q", dbText, 14)
+winField.AllowZeroLength = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t2_r", dbText, 7)
+winField.AllowZeroLength = True
+winTableDef.Fields.Append winField
+winDatabase.TableDefs.Append winTableDef
+Set winField = winTableDef.Fields("t2_a")
+Set winField = winTableDef.Fields("t2_b")
+Set winField = winTableDef.Fields("t2_c")
+Set winField = winTableDef.Fields("t2_d")
+Set winField = winTableDef.Fields("t2_f")
+Set winField = winTableDef.Fields("t2_g")
+Set winField = winTableDef.Fields("t2_h")
+Set winField = winTableDef.Fields("t2_i")
+Set winField = winTableDef.Fields("t2_j")
+Set winField = winTableDef.Fields("t2_k")
+Set winField = winTableDef.Fields("t2_l")
+Set winField = winTableDef.Fields("t2_m")
+Set winField = winTableDef.Fields("t2_n")
+Set winField = winTableDef.Fields("t2_o")
+Set winField = winTableDef.Fields("t2_p")
+Set winField = winTableDef.Fields("t2_q")
+Set winField = winTableDef.Fields("t2_r")
+
+Set winTableDef = winDatabase.TableDefs("Table2")
+Set winIndex = winTableDef.CreateIndex("PrimaryKey")
+Set winField = winIndex.CreateField("t2_a")
+winIndex.Fields.Append winField
+winIndex.Primary = True
+winIndex.Clustered = True
+winTableDef.Indexes.Append winIndex
+
+'  CREATE TABLE "Table3"
+Set winTableDef = winDatabase.CreateTableDef("Table3")
+Set winField = winTableDef.CreateField("t3_a", dbText, 1)
+winField.Required = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t3_b", dbInteger)
+winField.Required = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t3_c", dbInteger)
+winField.Required = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t3_d", dbInteger)
+winField.Required = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t3_e", dbDouble)
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t3_f", dbDouble)
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t3_g", dbDouble)
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t3_h", dbDouble)
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t3_i", dbDouble)
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t3_j", dbDouble)
+winTableDef.Fields.Append winField
+winDatabase.TableDefs.Append winTableDef
+Set winField = winTableDef.Fields("t3_a")
+Set winField = winTableDef.Fields("t3_b")
+Set winField = winTableDef.Fields("t3_c")
+Set winField = winTableDef.Fields("t3_d")
+Set winField = winTableDef.Fields("t3_e")
+Set winField = winTableDef.Fields("t3_f")
+Set winField = winTableDef.Fields("t3_g")
+Set winField = winTableDef.Fields("t3_h")
+Set winField = winTableDef.Fields("t3_i")
+Set winField = winTableDef.Fields("t3_j")
+
+Set winTableDef = winDatabase.TableDefs("Table3")
+Set winIndex = winTableDef.CreateIndex("PrimaryKey")
+Set winField = winIndex.CreateField("t3_a")
+winIndex.Fields.Append winField
+Set winField = winIndex.CreateField("t3_b")
+winIndex.Fields.Append winField
+Set winField = winIndex.CreateField("t3_c")
+winIndex.Fields.Append winField
+Set winField = winIndex.CreateField("t3_d")
+winIndex.Fields.Append winField
+winIndex.Primary = True
+winIndex.Clustered = True
+winTableDef.Indexes.Append winIndex
+
+'  CREATE TABLE "Table4"
+Set winTableDef = winDatabase.CreateTableDef("Table4")
+Set winField = winTableDef.CreateField("t4_a", dbText, 1)
+winField.Required = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t4_b", dbInteger)
+winField.Required = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t4_c", dbInteger)
+winField.Required = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t4_d", dbInteger)
+winField.Required = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t4_e", dbInteger)
+winField.Required = True
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t4_f", dbDate)
+winTableDef.Fields.Append winField
+Set winField = winTableDef.CreateField("t4_g", dbInteger)
+winTableDef.Fields.Append winField
+winDatabase.TableDefs.Append winTableDef
+Set winField = winTableDef.Fields("t4_a")
+Set winField = winTableDef.Fields("t4_b")
+Set winField = winTableDef.Fields("t4_c")
+Set winField = winTableDef.Fields("t4_d")
+Set winField = winTableDef.Fields("t4_e")
+Set winField = winTableDef.Fields("t4_f")
+Set winField = winTableDef.Fields("t4_g")
+
+Set winTableDef = winDatabase.TableDefs("Table4")
+Set winIndex = winTableDef.CreateIndex("PrimaryKey")
+Set winField = winIndex.CreateField("t4_a")
+winIndex.Fields.Append winField
+Set winField = winIndex.CreateField("t4_b")
+winIndex.Fields.Append winField
+Set winField = winIndex.CreateField("t4_c")
+winIndex.Fields.Append winField
+Set winField = winIndex.CreateField("t4_d")
+winIndex.Fields.Append winField
+Set winField = winIndex.CreateField("t4_e")
+winIndex.Fields.Append winField
+winIndex.Primary = True
+winIndex.Clustered = True
+winTableDef.Indexes.Append winIndex
+
+'  CREATE RELATIONSHIP "R/1"
+Set winRelation = winDatabase.CreateRelation("R/1", "Table1", "Table2")
+Set winField = winRelation.CreateField("t1_a")
+winField.ForeignName = "t2_r"
+winRelation.Fields.Append winField
+winDatabase.Relations.Append winRelation
+
+'  CREATE RELATIONSHIP "R/2"
+Set winRelation = winDatabase.CreateRelation("R/2", "Table3", "Table4")
+Set winField = winRelation.CreateField("t3_a")
+winField.ForeignName = "t4_a"
+winRelation.Fields.Append winField
+Set winField = winRelation.CreateField("t3_b")
+winField.ForeignName = "t4_b"
+winRelation.Fields.Append winField
+Set winField = winRelation.CreateField("t3_c")
+winField.ForeignName = "t4_c"
+winRelation.Fields.Append winField
+Set winField = winRelation.CreateField("t3_d")
+winField.ForeignName = "t4_d"
+winRelation.Fields.Append winField
+winRelation.Attributes = winRelation.Attributes + dbRelationDeleteCascade
+winRelation.Attributes = winRelation.Attributes + dbRelationUpdateCascade
+winDatabase.Relations.Append winRelation
+
+winDatabase.Close
+Set winDatabase = Nothing
+
+DB_Create = True
+Exit Function
+   
+CreateError:
+   MsgBox Err.Description, vbCritical, TMsg
+   Kill DbName
+   
+   DB_Create = False
+End Function
+
+ 
+ 
+ 
+

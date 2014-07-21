@@ -1,0 +1,24 @@
+D:\Development\SpritePacker\SpritePacker\bin\Release\SpritePacker.exe
+D:\Development\SpritePacker\SpritePacker\bin\Release\SpritePacker.pdb
+D:\Development\SpritePacker\SpritePacker\obj\Release\ResolveAssemblyReference.cache
+D:\Development\SpritePacker\SpritePacker\obj\Release\SpritePacker.frmMain.resources
+D:\Development\SpritePacker\SpritePacker\obj\Release\SpritePacker.Properties.Resources.resources
+D:\Development\SpritePacker\SpritePacker\obj\Release\SpritePacker.csproj.GenerateResource.Cache
+D:\Development\SpritePacker\SpritePacker\obj\Release\SpritePacker.exe
+D:\Development\SpritePacker\SpritePacker\obj\Release\SpritePacker.pdb
+C:\Documents and Settings\MyCom\바탕 화면\SpritePacker\SpritePacker\obj\Release\SpritePacker.exe
+C:\Documents and Settings\MyCom\바탕 화면\SpritePacker\SpritePacker\obj\Release\SpritePacker.pdb
+C:\Documents and Settings\MyCom\바탕 화면\SpritePacker\SpritePacker\bin\Release\SpritePacker.exe
+C:\Documents and Settings\MyCom\바탕 화면\SpritePacker\SpritePacker\bin\Release\SpritePacker.pdb
+C:\Documents and Settings\MyCom\바탕 화면\SpritePacker\SpritePacker\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\MyCom\바탕 화면\SpritePacker\SpritePacker\obj\Release\SpritePacker.frmMain.resources
+C:\Documents and Settings\MyCom\바탕 화면\SpritePacker\SpritePacker\obj\Release\SpritePacker.Properties.Resources.resources
+C:\Documents and Settings\MyCom\바탕 화면\SpritePacker\SpritePacker\obj\Release\SpritePacker.csproj.GenerateResource.Cache
+D:\Development\C# Development Projects\SpritePacker\SpritePacker\obj\Release\SpritePacker.exe
+D:\Development\C# Development Projects\SpritePacker\SpritePacker\obj\Release\SpritePacker.pdb
+D:\Development\C# Development Projects\SpritePacker\SpritePacker\bin\Release\SpritePacker.exe
+D:\Development\C# Development Projects\SpritePacker\SpritePacker\bin\Release\SpritePacker.pdb
+D:\Development\C# Development Projects\SpritePacker\SpritePacker\obj\Release\ResolveAssemblyReference.cache
+D:\Development\C# Development Projects\SpritePacker\SpritePacker\obj\Release\SpritePacker.frmMain.resources
+D:\Development\C# Development Projects\SpritePacker\SpritePacker\obj\Release\SpritePacker.Properties.Resources.resources
+D:\Development\C# Development Projects\SpritePacker\SpritePacker\obj\Release\SpritePacker.csproj.GenerateResource.Cache

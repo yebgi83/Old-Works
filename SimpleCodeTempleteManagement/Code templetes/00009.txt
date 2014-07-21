@@ -1,0 +1,11 @@
+[Title]Visual Basic) DB에서 필드 등록 ( 비베 코드 )
+Dim rs as ADODB.RecordSet 
+
+Set rs = New ADODB.RecordSet
+
+rs.Fields.Append "AlpjbetID", adInteger
+
+or
+
+rs.Fields.Append "Alphbet", adBSTR, 26
+

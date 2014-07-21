@@ -1,0 +1,24 @@
+C:\Documents and Settings\MyCom\Local Settings\Application Data\Temporary Projects\RenderingTest\bin\Debug\RenderingTest.exe
+C:\Documents and Settings\MyCom\Local Settings\Application Data\Temporary Projects\RenderingTest\bin\Debug\RenderingTest.pdb
+C:\Documents and Settings\MyCom\Local Settings\Application Data\Temporary Projects\RenderingTest\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\MyCom\Local Settings\Application Data\Temporary Projects\RenderingTest\obj\Debug\RenderingTest.frmMain.resources
+C:\Documents and Settings\MyCom\Local Settings\Application Data\Temporary Projects\RenderingTest\obj\Debug\RenderingTest.Properties.Resources.resources
+C:\Documents and Settings\MyCom\Local Settings\Application Data\Temporary Projects\RenderingTest\obj\Debug\RenderingTest.csproj.GenerateResource.Cache
+C:\Documents and Settings\MyCom\Local Settings\Application Data\Temporary Projects\RenderingTest\obj\Debug\RenderingTest.exe
+C:\Documents and Settings\MyCom\Local Settings\Application Data\Temporary Projects\RenderingTest\obj\Debug\RenderingTest.pdb
+D:\Dev\Etc\RenderingTest\RenderingTest\obj\Debug\RenderingTest.exe
+D:\Dev\Etc\RenderingTest\RenderingTest\obj\Debug\RenderingTest.pdb
+D:\Dev\Etc\RenderingTest\RenderingTest\bin\Debug\RenderingTest.exe
+D:\Dev\Etc\RenderingTest\RenderingTest\bin\Debug\RenderingTest.pdb
+D:\Dev\Etc\RenderingTest\RenderingTest\obj\Debug\ResolveAssemblyReference.cache
+D:\Dev\Etc\RenderingTest\RenderingTest\obj\Debug\RenderingTest.frmMain.resources
+D:\Dev\Etc\RenderingTest\RenderingTest\obj\Debug\RenderingTest.Properties.Resources.resources
+D:\Dev\Etc\RenderingTest\RenderingTest\obj\Debug\RenderingTest.csproj.GenerateResource.Cache
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\obj\Debug\RenderingTest.exe
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\obj\Debug\RenderingTest.pdb
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\obj\Debug\ResolveAssemblyReference.cache
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\obj\Debug\RenderingTest.frmMain.resources
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\obj\Debug\RenderingTest.Properties.Resources.resources
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\obj\Debug\RenderingTest.csproj.GenerateResource.Cache
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\bin\Debug\RenderingTest.exe
+D:\Development\C# Development Projects\RenderingTest\RenderingTest\bin\Debug\RenderingTest.pdb

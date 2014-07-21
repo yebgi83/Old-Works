@@ -1,0 +1,205 @@
+[Title]VB) VB에서 구현하는 멀티Thread 프로그래밍
+[6.0] 멀티 쓰레딩 프로그래밍(Multi-Thread Programming)을 VB 6.0에서 구현하기 - #01 시 작 | 6.0 강좌 & Tip 
+ 2007.05.04 13:04 
+ 수학쟁이(startgoora) 
+  
+http://cafe.naver.com/myvb/12938   
+ 
+ 
+
+ [6.0] 멀티 쓰레딩 프로그래밍(Multi-Thread Programming)을 VB 6.0에서 구현하기 - #01
+
+ 
+
+ 이번 강좌는 무작정 따라하기 Or 복사하기 팁이 아닌 Step-By-Step 의 강좌입니다.
+
+ 
+
+ 쓰레드(Thread)가 뭘까요?
+
+ 
+
+ 쓰레드(Thread)란 한 프로세스 안의 작업 단위입니다. 쉽게 말하면 프로그램 내부의 작은 일의 단위죠.
+
+ 
+
+ Visual Basic 6.0은 단일 쓰레딩 프로그래밍 방식입니다. (이 점이 우리의 마음을 아프게 하죠 TT 안그렇나요?
+
+ 
+
+ Java나 VB.NET은 다중 쓰레딩 지원하는데 잉잉 ㅜㅜ)
+
+ 
+
+ Visual Basic 6.0이 단일 쓰레딩 프로그래밍 인 것은 간단한 예로 아래를 들 수 있겠네요.
+
+ 
+
+ Sub Main()
+
+      Call InfiniteLoop
+
+      Call MyWork
+
+ End Sub
+
+ 
+
+ Sub InfiniteLoop()
+
+      Do
+
+          DoEvents
+
+      Loop
+
+ End Sub
+
+ 
+
+ Sub MyWork()
+
+      MsgBox "My Work done."
+
+ End Sub
+
+ 
+
+ 같은 모듈이 있고 시작 개체가 Sub Main으로 설정되어있다고 해보죠.
+
+ 
+
+ 이 모듈로 작성된 프로그램을 키면, 아무런 반응이 없는걸 볼 수 있습니다.
+
+ 
+
+ Sub Main 에서 출발해서 아래와 같은 진행으로 'MyWork'은 영영 실행되지 않게 됩니다.
+
+ 
+
+ 
+
+
+
+
+Sub Main의 내용은 순차적으로 실행됩니다.
+ 
+InfiniteLoop 에서 무한루프를 만났기 때문에 빠져나올 수 없습니다.
+ 
+ 
+그 이외에 While ~ Wend 안의 구문이나 For 문 처리 도중에는
+ 
+프로그램이 다운 되어버린 것 같은 상태가 되어버립니다.
+ 
+(이 때 이 점을 보완하기 위해 나온게 DoEvents 내장 함수 입니다. 하지만
+ 
+이것도 어느정도 한계가 있습니다.)
+ 
+소위 말하는 (응답 없음) 상태가 되어버리는데,
+ 
+이는 프로그램 내부의 쓰레드가 한 개여서 그렇다는 것을
+ 
+입증해주고 있습니다.
+ 
+ 
+# 쓰레드 만드는 방법을 모르는 프로그래머들은 대부분 타이머를 이용합니다.
+ 
+interval가 1 인 타이머를 이용하여 멀티 쓰레드처럼 구현하는 꽁수를 사용합니다.
+ 
+하지만 이런 작업은 하나의 꽁수일 뿐 정석이 될 수는 없습니다.
+ 
+오히려 쓰레드를 하나 만드는것 보다 불안정해질 수 있습니다.
+ 
+ 
+VB6.0 에서 이 쓰레드를 여러개 실행하여 여러 작업을 '한번에' 처리하는 것은 어떻게 할 수 있을까요?
+ 
+한 예로 설치 프로그램을 들어 볼 수 있습니다. 아니면..
+ 
+탐색기에서의 파일 삭제를 예로 들어보죠. 삭제 도중에 삭제 아이콘 애니메이션이 진행됩니다.
+ 
+삭제 애니메이션도 진행되면서 동시에 삭제도 이뤄집니다.
+ 
+상식적으로 단일 쓰레드 내에선 '불가능'합니다. 이는, '애니메이션이 진행되는 쓰레드'와 '삭제를 진행하는 쓰레드'
+ 
+두 가지가 존재하기 때문입니다.
+ 
+ 
+# 멀티 쓰레드 구현하는 이론
+ 
+Windows 에서는 프로그래머에게 API라는 거대한 프로시져 라이브러리를 지원합니다.
+ 
+이 API는 프로그램의 제한을 조금이나마 덜어주고 있습니다.
+ 
+이 API로 멀티 쓰레드를 구현할 수 있다는 사실.. 알고 있으십니까?
+ 
+CreateThread 라는 API가 있죠.
+ 
+이 API는 보이는 영어 자체를 해석해보면, "쓰레드를 만드는" API 입니다.
+ 
+네 맞습니다. 이 API는 쓰레드를 만들어줍니다.
+ 
+ 
+이 API의 선언문과 매개 변수를 한번 볼까요?
+ 
+Private/Public Declare Function CreateThread Lib "kernel32" Alias "CreateThread" (lpThreadAttributes As SECURITY_ATTRIBUTES, ByVal dwStackSize As Long, lpStartAddress As Long, lpParameter As Any, ByVal dwCreationFlags As Long, lpThreadId As Long) As Long
+
+우선 CreateThread API는 위와 같이 선언해줄 수 있습니다.
+ 
+각 매개 변수의 의미를 보죠.
+ 
+lpThreadAttributes as SECURITY_ATTRIBUTES
+ 
+: 이 매개 변수는 이 쓰레드에 대한 보안 옵션을 지정하는 매개 변수입니다.
+ 
+생성한 SECURITY_ATTRIBUTES 구조체의 주소값을 ByRef 방식으로 넘겨줍니다.
+ 
+이 매개 변수는 거의 쓰이지 않으므로 ByVal 0& 같은 값으로 넣어주면 됩니다.
+ 
+(위 선언문으로 선언한 뒤 lpThreadAttributes 부분에 ByVal 0&을 넣으면 오류가 납니다.
+ 
+SECURITY_ATTRIBUTES 라는 구조체가 없어서 그런건데요. 이 때 선언문에서 SECURITY_ATTRIBUTES
+ 
+부분을 Any로 바꾸면 됩니다.)
+ 
+ByVal dwStackSize As Long
+ 
+: 값으로 '스택의 공간'을 넘겨주는 매개 변수임을 알 수 있습니다.
+ 
+이 것도 역시 그렇게 자주 쓰이지 않습니다. 위에처럼 ByVal 0& 을 넣으면 됩니다.
+ 
+* ByVal 0&의 의미: ByVal (주소값이 아닌 값으로), 0& (Long형 숫자 '0'으로) 라는 의미입니다.
+ 
+dwStackSize에는 0 만 넣어줘도 되긴 합니다. (이미 ByVal과 as Long이 선언문에 있거든요)
+ 
+lpStartAddress As Long (중요! IMPORTANT!)
+ 
+: 새로운 쓰레드가 실행할 Sub/Function 문의 주소값을 넘겨줍니다.
+ (이 때 반드시 그 Sub/Function 문은 '모듈'에 있어야 합니다.)
+ 
+예를 들어 모듈에 있는 funcThread 를 쓰레드에서 처리하게 하려면 아래와 같이 써주면 되겠죠.
+ 
+hThread = CreateThread(~~~, AddressOf funcThread, ~~~)
+ 
+lpParameter As Any
+ 
+: 매개 변수 값입니다. ByVal 0&을 넣어줍니다.
+ 
+ByVal dwCreationFlags As Long
+ 
+: 생성시 기타 사항인데 0을 넣어주시면 됩니다.
+ 
+lpThreadId as Long
+ 
+: 생성된 쓰레드의 고유번호(id)가 저장될 변수를 넘겨줍니다. 이 고유번호는 나중에 쓰레드를 호출할 때
+ 
+혹은, 특정 쓰레드의 핸들을 찾을 때 필요한 것 입니다.
+ 
+As Long
+ 
+: 이 API의 반환값은 생성된 쓰레드의 핸들(hThread) 값 입니다. 이 핸들은 직접 쓰레드를 엑세스 하는데 필요한 값 입니다.
+ 
+ 
+다음 강좌부터 실습을 해보도록 합시다.
+ 
+이번 강좌는 여기서 마치겠습니다.
+ 

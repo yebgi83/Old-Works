@@ -1,0 +1,12 @@
+[Title]데이터베이스 관련 용어 모르는 것들 관리
+데이터베이스 용어 & 튜닝 
+튜닝
+DBA
+LOCKS
+DBMS
+리해싱
+인덱싱
+INDEX REBUILD작업
+DML작업
+딕셔너리 뷰
+

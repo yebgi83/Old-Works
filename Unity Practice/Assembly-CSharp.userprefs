@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\J1\Action\Jump.cs">
+    <Files>
+      <File FileName="Assets\Scripts\J1\Action\Effect.cs" Line="9" Column="1" />
+      <File FileName="Assets\Scripts\J1\Action\Combo.cs" Line="8" Column="1" />
+      <File FileName="Assets\Scripts\J1\Action\Jump.cs" Line="16" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

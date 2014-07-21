@@ -1,0 +1,9 @@
+Find: c:
+Find: c:/game
+Find: c:/game/병아리
+Find: c:/game/병아리
+Find: c:/game/병아리
+Find: c:/game
+Find: c:/game/mp3가사
+Find: c:/game/mp3가사
+Find: c:/game/mp3가사

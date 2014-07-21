@@ -1,0 +1,253 @@
+Attribute VB_Name = "Module1"
+Const 최대참가자 = 1000
+Const NOTTHING = 0
+Const 경주포기 = 5000000#
+
+Type 참가자서식
+    이름     As String * 64
+    로봇명   As String * 64
+    학교     As String * 64
+    순위     As Integer
+    주행횟수 As Integer
+    최고기록 As Long
+    주행기록 As String * 128
+    사용시간 As Long
+End Type
+
+Dim 참가자(최대참가자) As 참가자서식
+Dim 참가인원           As Integer
+
+'참가자를 특정 배열 첨자에 입력한다
+Sub 참가자배열입력(첨자 As Integer, 이름 As String, 로봇명 As String, 학교 As String, 순위 As Integer, 주행횟수 As Integer, 최고기록 As Integer, 주행기록 As String, 남은시간 As Long)
+    n = 첨자
+    참가자(n).이름 = 이름
+    참가자(n).로봇명 = 로봇명
+    참가자(n).학교 = 학교
+    참가자(n).순위 = 순위
+    참가자(n).주행횟수 = 주행횟수
+    참가자(n).최고기록 = 최고기록
+    참가자(n).주행기록 = 주행기록
+    참가자(n).사용시간 = 사용시간
+End Sub
+'참가자DB를 초기화한다.
+Sub 참가자DB초기화()
+    Dim i As Integer
+    
+    참가인원 = 0
+    For i = 1 To 최대참가자
+        참가자배열입력 i, "", "", "", 0, 0, 0, "", 0
+    Next i
+End Sub
+'참가자를 참가자DB에 추가한다.
+Sub 참가자등록(이름 As String, 로봇명 As String, 학교 As String)
+    참가인원 = 참가인원 + 1 '참가인원 한명 추가
+    
+    '참가자 등록
+    참가자배열입력 참가인원, 이름, 로봇명, 학교, 0, 0, 0, "", 0
+End Sub
+Sub 참가자삭제(첨자 As Integer)
+    Dim i As Integer
+    
+    Dim 이름     As String * 16
+    Dim 로봇명   As String * 16
+    Dim 학교     As String * 16
+    Dim 순위     As Integer
+    Dim 주행횟수 As Integer
+    Dim 최고기록 As Integer
+    Dim 주행기록 As String * 128
+    Dim 사용시간 As Long
+    
+    For i = 첨자 To 참가인원 - 1
+        이름 = 참가자(i + 1).이름
+        로봇명 = 참가자(i + 1).로봇명
+        학교 = 참가자(i + 1).학교
+        순위 = 참가자(i + 1).순위
+        주행횟수 = 참가자(i + 1).주행횟수
+        최고기록 = 참가자(i + 1).최고기록
+        주행기록 = 참가자(i + 1).주행기록
+        사용시간 = 참가자(i + 1).사용시간
+        참가자배열입력 i, 이름, 로봇명, 학교, 순위, 주행횟수, 최고기록, 주행기록, 사용시간
+    Next i
+    
+    참가자배열입력 참가인원, "", "", "", 0, 0, 0, "", 0
+    참가인원 = 참가인원 - 1
+End Sub
+Sub 참가자파일저장(파일명 As String)
+    '파일 초기화
+    Open 파일명 For Output As #1: Close #1
+    
+    '파일 저장
+    Open 파일명 For Binary As #1
+        For i = 1 To 참가인원
+            Put #1, , 참가자(i)
+        Next i
+    Close #1
+End Sub
+Sub 참가자파일부르기(파일명 As String)
+    '참가자 명단 초기화
+    참가자DB초기화
+    
+    '파일 부른다.
+    Open 파일명 For Binary As #1
+    Do
+        If LOF(1) = Loc(1) Then Exit Do
+        참가인원 = 참가인원 + 1
+        Get #1, , 참가자(참가인원)
+    Loop
+    Close #1
+End Sub
+Function 시간형태로변환(Count As Long) As String
+    Dim Min As Integer
+    Dim Sec As Integer
+    Dim MSec As Integer
+    Dim TempCount As Long
+    
+    'Call by reference효과를 방지
+    TempCount = Count
+    
+    '초.시.밀리세컨으로 분리
+    Min = Int(TempCount / 6000)
+    TempCount = TempCount Mod 6000
+    
+    Sec = Int(TempCount / 100)
+    TempCount = TempCount Mod 100
+    
+    MSec = TempCount
+    
+    '문자열로 변환 합체
+    StrMin$ = LTrim$(Min)
+    If Len(StrMin$) < 2 Then StrMin$ = "0" + StrMin$
+    
+    StrSec$ = LTrim$(Sec)
+    If Len(StrSec$) < 2 Then StrSec$ = "0" + StrSec$
+    
+    StrMSec$ = LTrim$(MSec)
+    If Len(StrMSec$) < 2 Then StrMSec$ = "0" + StrMSec$
+    
+    '결과값을 돌려줌
+    시간형태로변환 = StrMin$ + ":" + StrSec$ + "." + StrMSec$
+End Function
+Sub 참가자DB연결(lv As ListView)
+    '리스트뷰 내용 삭제
+    lv.ListItems.Clear
+    
+    '리스트뷰에 삽입
+    For i = 1 To 참가인원
+        Set ItmX = lv.ListItems.Add(, , Str(i))
+        ItmX.SubItems(1) = RTrim$(참가자(i).이름)
+        ItmX.SubItems(2) = RTrim$(참가자(i).학교)
+        ItmX.SubItems(3) = RTrim$(참가자(i).로봇명)
+        
+        If 참가자(i).순위 = 0 Then
+           ItmX.SubItems(4) = "---"
+        Else
+           ItmX.SubItems(4) = Str(참가자(i).순위)
+        End If
+        
+        If 참가자(i).최고기록 = 0 Then
+           ItmX.SubItems(5) = "--------"
+        Else
+           ItmX.SubItems(5) = 시간형태로변환(참가자(i).최고기록)
+        End If
+        
+        ItmX.SubItems(6) = Str(참가자(i).주행횟수)
+        ItmX.SubItems(7) = 시간형태로변환(참가자(i).사용시간)
+    Next i
+End Sub
+Sub 주행기록보기(첨자 As Integer, lv As ListView)
+    '주행기록을 리스트뷰에 보여줌
+    Dim TempCount As Long
+    Dim Record As String
+    
+    '리스트뷰 내용 삭제
+    lv.ListItems.Clear
+    
+    '리스트뷰에 삽입
+    Record = 참가자(첨자).주행기록
+    For i = 1 To 참가자(첨자).주행횟수
+        HighOffset = 3 * (i - 1) + 1 ' 상위바이트
+        MidOffset = 3 * (i - 1) + 2
+        LowOffset = 3 * (i - 1) + 3  ' 하위바이트
+        H = AscW(Mid$(Record, HighOffset, 1))
+        M = AscW(Mid$(Record, MidOffset, 1))
+        L = AscW(Mid$(Record, LowOffset, 1))
+        TempCount = H * 65536# + M * 256# + L
+        
+        Set ItmX = lv.ListItems.Add(, , Str(i))
+        If TempCount <> 경주포기 Then
+           ItmX.SubItems(1) = 시간형태로변환(TempCount)
+        Else
+           ItmX.SubItems(1) = "--------"
+        End If
+        
+        Select Case TempCount
+           Case 경주포기
+              ItmX.SubItems(2) = "경주포기"
+           Case 참가자(첨자).최고기록
+              ItmX.SubItems(2) = "최고기록"
+           Case Else
+              ItmX.SubItems(2) = "."
+        End Select
+    Next i
+End Sub
+Sub 기록삭제(첨자 As Integer)
+    참가자(첨자).주행횟수 = 0
+    참가자(첨자).주행기록 = ""
+End Sub
+Sub 순위계산(첨자 As Integer)
+    Dim 최하순위 As Integer
+    최하순위 = 참가인원
+    For i = 1 To 참가인원
+       If 참가자(i).최고기록 = 0 Then 최하순위 = 최하순위 - 1
+    Next i
+    For i = 1 To 참가인원
+       If 참가자(i).최고기록 <> 0 Then
+          참가자(i).순위 = 최하순위
+       Else
+          i = i + 1
+          If i > 참가인원 Then Exit For
+       End If
+       For j = 1 To 참가인원
+           If i <> j And 참가자(j).최고기록 <> 0 Then
+              If 참가자(i).최고기록 <= 참가자(j).최고기록 Then 참가자(i).순위 = 참가자(i).순위 - 1
+           End If
+       Next j
+    Next i
+End Sub
+Sub 기록추가(첨자 As Integer, 기록 As Long)
+    Dim Temp기록 As Long
+    Temp기록 = 기록
+    
+    n = 참가자(첨자).주행횟수
+    
+    HighOffset = 3 * n + 1 ' 상위바이트
+    MidOffset = 3 * n + 2  ' 중간바이트
+    LowOffset = 3 * n + 3  ' 하위바이트
+    
+    '오버플로우 방지
+    If Temp기록 > 16777217 Then Temp기록 = 16777217
+    
+    Mid$(참가자(첨자).주행기록, HighOffset, 1) = ChrW$(Int(Temp기록 / 65536#))
+    Temp기록 = Temp기록 Mod 65536#
+    Mid$(참가자(첨자).주행기록, MidOffset, 1) = ChrW$(Int(Temp기록 / 256#))
+    Mid$(참가자(첨자).주행기록, LowOffset, 1) = ChrW$(Temp기록 Mod 256#)
+    
+    참가자(첨자).주행횟수 = 참가자(첨자).주행횟수 + 1
+    참가자(첨자).사용시간 = Get사용시간
+    '최고기록보다 빠르면 최고기록 갱신( 경주포기는 기록 인정 안함 )
+    If (참가자(첨자).최고기록 > 기록 Or 참가자(첨자).최고기록 = 0) And 기록 <> 경주포기 Then 참가자(첨자).최고기록 = 기록
+    
+    '순위계산을 통해 순위 부분 갱신
+    순위계산 첨자
+End Sub
+Function Set참가자사용시간(첨자 As Integer, 사용시간 As Integer)
+    참가자(첨자).사용시간 = 사용시간
+End Function
+Function Get참가자사용시간(첨자 As Integer) As Long
+    Get참가자사용시간 = 참가자(첨자).사용시간
+End Function
+Function Get참가인원() As Integer
+    Get참가인원 = 참가인원
+End Function
+
+

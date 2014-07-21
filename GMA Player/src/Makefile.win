@@ -1,0 +1,49 @@
+# Project: gmaplayer
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = 
+OBJ  = win/main.o win/lyrics.o win/MadWrapper.o win/mp3engine.o win/drawtext.o win/filedialog.o $(RES)
+LINKOBJ  = win/main.o win/lyrics.o win/MadWrapper.o win/mp3engine.o win/drawtext.o win/filedialog.o $(RES)
+LIBS =  -L"C:/Dev-Cpp for GP2X/lib" -lmingw32 -liconv -lgp2x -lSDLmain -lSDL -lmad -lunicodefont   
+INCS =  -I"C:/Dev-Cpp for GP2X/include/GP2X"  -I"C:/Dev-Cpp for GP2X/include/SDL"  -I"C:/Dev-Cpp for GP2X/include" 
+CXXINCS =  -I"C:/Dev-Cpp for GP2X/include/GP2X"  -I"C:/Dev-Cpp for GP2X/include/SDL"  -I"C:/Dev-Cpp for GP2X/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp for GP2X/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp for GP2X/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp for GP2X/include/c++/3.4.2"  -I"C:/Dev-Cpp for GP2X/include" 
+BIN  = gmaplayer.exe
+CXXFLAGS = $(CXXINCS)   -DWIN32 -fexpensive-optimizations -O3
+CFLAGS = $(INCS) -D_REENTRANT   -DWIN32 -fexpensive-optimizations -O3
+RM = rm -f
+MKDIR = cygwin-mkdir -p
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before gmaplayer.exe all-after
+
+all-before:
+	$(MKDIR) win
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o $@ $(LIBS)
+
+win/main.o: main.cpp
+	$(CPP) -c main.cpp -o win/main.o $(CXXFLAGS)
+
+win/lyrics.o: lyrics.cpp
+	$(CPP) -c lyrics.cpp -o win/lyrics.o $(CXXFLAGS)
+
+win/MadWrapper.o: MadWrapper.cpp
+	$(CPP) -c MadWrapper.cpp -o win/MadWrapper.o $(CXXFLAGS)
+
+win/mp3engine.o: mp3engine.cpp
+	$(CPP) -c mp3engine.cpp -o win/mp3engine.o $(CXXFLAGS)
+
+win/drawtext.o: drawtext.cpp
+	$(CPP) -c drawtext.cpp -o win/drawtext.o $(CXXFLAGS)
+
+win/filedialog.o: filedialog.cpp
+	$(CPP) -c filedialog.cpp -o win/filedialog.o $(CXXFLAGS)

@@ -1,0 +1,275 @@
+[Title]C++) OwnerDraw 
+   
+ 목록열기    - API 실습 (43)   
+   
+
+
+   
+ 오너드로우 버튼(Ownerdraw button) 만들기  - API 실습  
+2007/06/26 12:46
+
+ http://blog.naver.com/rfsoft/120039429118 
+
+
+ 
+
+위 사진은 클릭전(상)과 클릭후(하)의 사진입니다.
+
+
+#include<windows.h>
+#include"resource.h"
+
+HINSTANCE hInst;
+TCHAR szMainName[] = TEXT("Ownerdraw Bitmap Butoon");
+TCHAR szTitleName [] = TEXT("Button");
+
+LRESULT CALLBACK WndMain(HWND, UINT, WPARAM, LPARAM);
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLien, int iCmdShow)
+{
+
+...... 생략 ......
+}
+
+LRESULT CALLBACK WndMain(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+ HWND hOwnerBitBtn;
+ static HBITMAP hbUp, hbDown;
+ LPDRAWITEMSTRUCT lpdis;
+ HDC hMemDC;
+
+ switch(uMsg)
+ {
+ case WM_CREATE:
+  hOwnerBitBtn = CreateWindow("button", NULL, WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_OWNERDRAW,
+   10, 10, 400, 141,
+   hWnd, (HMENU)IDC_OWNERBIT, hInst, NULL);   //3번재 파라미터에 BS_OWNERDRAW를 추가시켜줘야 버튼 이미지를 넣을수 있습니다.
+  hbUp = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_NEWMICR)); //버튼의 클릭후의 이미지를 hbUp의 HBITMAP핸들에 저장합니다.
+  hbDown = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_NEWMICRDOWN)); //버튼의 클릭후의 이미지를 hbDown의 HBITMAP핸들에 저장합니다.
+  return 0;
+
+ case WM_DRAWITEM: //오너드로우 상태가 되어 있는 버튼에 그림을 실제로 입히는 메시지입니다.
+  lpdis = (LPDRAWITEMSTRUCT)lParam;
+  hMemDC = CreateCompatibleDC(lpdis->hDC);
+  if(lpdis->itemState & ODS_SELECTED) //lpdis의 itemState가 ODS_SELECTED일 경우, 즉 선택했을 경우(클릭 상태일경우) 참, 아니면 거짓
+  {
+   SelectObject(hMemDC, hbDown);  //참(클릭상태, 즉 ODS_SELECTED상태)이면 hMemDC에 hbDown의 이미지 핸들값을 연결합니다.
+  }
+  else
+  {
+   SelectObject(hMemDC, hbUp); //거짓이면 hMemDC에 hbUp의 이미지 핸들값을 연결합니다.
+/*
+
+DRAWITEMSTRUCT 구조체 내의 itemState의 파라미터 내용입니다. 참고하세요.
+
+itemState 
+Specifies the visual state of the item after the current drawing action takes place. This member can be a combination of the values shown in the following table. 
+ODS_CHECKED 
+The menu item is to be checked. This bit is used only in a menu. 
+ODS_COMBOBOXEDIT 
+The drawing takes place in the selection field (edit control) of an owner-drawn combo box. 
+ODS_DEFAULT 
+The item is the default item. 
+ODS_DISABLED 
+The item is to be drawn as disabled. 
+ODS_FOCUS 
+The item has the keyboard focus.  
+ODS_GRAYED 
+The item is to be grayed. This bit is used only in a menu. 
+ODS_HOTLIGHT 
+Windows 98/Me, Windows 2000/XP: The item is being hot-tracked, that is, the item will be highlighted when the mouse is on the item. 
+ODS_INACTIVE 
+Windows 98/Me, Windows 2000/XP: The item is inactive and the window associated with the menu is inactive. 
+ODS_NOACCEL 
+Windows 2000/XP: The control is drawn without the keyboard accelerator cues. 
+ODS_NOFOCUSRECT 
+Windows 2000/XP: The control is drawn without focus indicator cues. 
+ODS_SELECTED 
+The menu item's status is selected.
+*/
+}
+  BitBlt(lpdis->hDC, 0, 0, 400, 141, hMemDC, 0, 0, SRCCOPY);
+  DeleteDC(hMemDC);
+  return 0;
+
+ case WM_COMMAND:
+  switch(LOWORD(wParam))
+  {
+  case IDC_OWNERBIT:
+   MessageBox(hWnd, "버튼을 클릭했지만 따로 보여드릴것이 없습니다.", "확인", MB_OK);
+   return 0;
+  }
+  return 0;
+
+ case WM_DESTROY:
+  DeleteObject(hbUp);
+  DeleteObject(hbDown);
+  PostQuitMessage(0);
+  return 0;
+ }
+
+ return DefWindowProc(hWnd, uMsg, wParam, lParam);
+}
+
+ 
+
+일단 WM_CREATE 메시지에 오너드로우할 버튼을 CreateWindow()를 통해 만듭니다. 이때 3번째 파라미터에 BS_OWNERDRAW를 꼭 | 시켜주셔야 가능합니다. 자 이제 버튼에 오너드로우 기능이 추가 되었습니다. 이 부분만 작성하고 빌더해보시면 글자 없는 버튼이 하나 만들어 질것입니다. 보통 오너드로우 버튼이 아닐 경우 CreateWndow()의 2번재 파라미터의 내용이 버튼에 써집니다.
+
+자 그럼 클릭전과 클릭후의 이미지를 넣어줘야겠네요. 그러기 위해선 일단 클릭전과 클릭후의 이미지가 필요합니다.(bmp파일로)
+
+준비가 되셨으면 리소스로 추가 시켜주시고 이미지에 ID를 부여해줍니다. 여기서는 이미지 ID를 IDB_NEWMICR, IDB_NEWMICRDOWN으로 했네요.. 리소스에 추가했으면 HBITMAP핸들에 저장해야겠죠? 그건 LoadBitmap()함수를 이용해 리소스를 핸들에 링크 시킵니다.
+
+두 리소스 모두 hbUp, hbDown의 HBITMAP의 형식으로 링크시켰죠..자 그럼 실제로 버튼이 클릭했을때 아니면 클릭전에 이미지를 버튼에 입혀줘야겠죠? 그 부분이 바로 WM_DRAWITEM메시지 부분입니다. 이 메시지에 필요한 구조체와 핸들이 있습니다.
+
+ 
+
+ LPDRAWITEMSTRUCT lpdis;
+ HDC hMemDC;
+
+ 
+
+이죠.. MSDN으로는 위의 LPDRAWITEMSTRUCT에서 LP를 빼시고 DRAWITEMSTRUCT를 넣으시면 나오더군요. 위에 주석처리된 부분을 참고하시고 더 자세한 부분이 필요하시면 MSDN의 내용을 참고하시면 될듯합니다.
+
+HDC는 당연히 아실꺼라 생각하고 넘어가겠습니다. MFC라면 CDC입니다. 다른거 없습니다. API는 핸들 개념이기때문에 앞부분에 H가 붙고 MFC는 클래스 개념이기 때문에 C가 붙습니다. 사용하는 방법의 대부분 유사합니다. 차이라면 포인트(.)와 자기참조(->) 정도?
+
+이 기능을 잘 사용하면 3상 오너드로우라던지, 스위치 이미지의 오너드로우 버튼도 작성이 가능하고, 심지어는 다른 컨트롤 부분의 이미지까지 넣을수 있습니다.
+
+ 
+
+* 설명 필요하시면 리풀 다세요.
+
+당분간 설명은 리풀 달린 블러그에만 할 생각입니다~
+
+ 
+
+위의 예제는 하나의 버튼을 바꾸는 방법입니다. 그럼 다른버튼은 어떻게 바꾸는지 알아보기로 하죠. 덧글 다신분 죄송합니다. 제가 늦게 덧글을 확인했네요. 메일로 보내드릴려했는데 아이디가 링크가 안되어 있네요.
+
+ 
+
+일단 오너드로우를 사용할 버튼의  Bitmap 파일은 아래와 같습니다.
+
+ 
+
+
+
+ 
+
+위 사진을 보시면 아시겠지만 버튼들의 이미지들이 한곳에 모여져있죠?
+
+뭐 버튼마다 하나의 비트맵을 사용하셔도 상관은 없습니다. 그렇게 돼면 리소스가 많이 낭비 됩니다.  코딩도 복잡해지죠.
+
+위 그림처럼 한곳에 보관하고 좌표점만 기억하신다면 작업은 간편해집니다.
+
+자 소스 파일을 살펴보죠..
+
+ 
+
+ LPDRAWITEMSTRUCT lpDrawItem;
+ lpDrawItem = (LPDRAWITEMSTRUCT)lParam;
+ HDC hMemDC;
+ HBITMAP hOldBit;
+ HBITMAP hButtonBit = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_HITBUTTON));
+ hMemDC = CreateCompatibleDC(lpDrawItem->hDC);
+ hOldBit = (HBITMAP)SelectObject(hMemDC, hButtonBit);
+ switch(lpDrawItem->CtlID)
+ {
+ case IDBU_MINIMIZE:
+  if(lpDrawItem->itemState & ODS_SELECTED)
+  {
+   BitBlt(lpDrawItem->hDC, 0, 0, 27, 14, hMemDC, 0, 0, SRCCOPY);
+  }
+  else
+  {
+   BitBlt(lpDrawItem->hDC, 0, 0, 27, 14, hMemDC, 28, 0, SRCCOPY);
+  }
+  break;
+
+ case IDBU_CLOSE:
+  if(lpDrawItem->itemState & ODS_SELECTED)
+  {
+   BitBlt(lpDrawItem->hDC, 0, 0, 27, 14, hMemDC, 0, 15, SRCCOPY);
+  }
+  else
+  {
+   BitBlt(lpDrawItem->hDC, 0, 0, 27, 14, hMemDC, 28, 15, SRCCOPY);
+  }
+  break;
+
+}
+
+ SelectObject(hMemDC, hOldBit);
+ DeleteObject(hButtonBit);
+ DeleteObject(hOldBit);
+ DeleteDC(hMemDC);
+
+}
+
+ 
+
+위의 소스는 당연히 WM_DRAWITEM 메시지에 들어가는 부분입니다. 일단 오너드로우 버튼들이 들어있는 bitmap파일을 Loadbitmap 해준 다음 LPDRAWITEMSTRUCT 구조체의 CtlID 값을 이용해 버튼의 ID값을 switch문으로 구분하여 각 버튼을 CreateWindow로 생성하면서 지정해준 ID값에 따라 Loadbitmap으로 불러들인 bitmap파일에 필요한 버튼의 좌표값을 넣어주는 것이죠.
+
+아래는  DRAWITEMSTRUCT 구조체의 파라미터입니다.
+
+typedef struct tagDRAWITEMSTRUCT {
+    UINT CtlType;
+    UINT CtlID;
+    UINT itemID;
+    UINT itemAction;
+    UINT itemState;
+    HWND hwndItem;
+    HDC hDC;
+    RECT rcItem;
+    ULONG_PTR itemData;
+} DRAWITEMSTRUCT;
+각 파라미터에 대한 정보는 MSDN을 참고하시기 바랍니다.
+Ownerdrawbutton 태그저장  취소 이 포스트를.. 
+ 덧글 9개  엮인글 쓰기  공감   
+  
+   
+
+
+   
+ ‘- API 실습 ’ 카테고리의 다른 글
+ 
+레지스트리.Ini파일 만들기  2008.12.30
+ 
+ 
+DLL 불러오기 - 묵시적 연결  2008.06.25
+ 
+ 
+윈도우 핸들 찾기(FindWindow함수, FindWindowEx함수) (2) 2008.01.10
+ 
+ 
+Windowsx.h의 메시지 크래커  2007.12.20
+ 
+ 
+API에서 윈도우 최소화 시키기  2007.12.07
+ 
+ 
+
+1   2   3   4   5   6   7   8   9 
+  
+   
+글 보내기 서비스 안내
+2009년 6월 30일 네이버 여행 서비스가 종료되었습니다.
+네이버 여행 서비스를 이용해 주신 여러분께 감사드리며, 
+더 좋은 서비스로 보답할 수 있도록 노력하겠습니다.
+
+
+
+
+ 문서파일로 저장하기   
+파일로 저장하기 버튼을 누른 후 잠시만 기다려주세요.
+
+이 기능은 베타 서비스 중입니다. 변환 후 배경음악등 일부 내용은
+정상적으로 표시되지 않을 수 있습니다. 문서파일로 저장하기 메뉴 도움말 
+
+
+     
+      
+ 
+                        
+                          
+ 
+카메라 모델 해상도 노출시간 노출보정 프로그램모드 ISO감도 조리개값 초점길이 측광모드 촬영일시 
+
